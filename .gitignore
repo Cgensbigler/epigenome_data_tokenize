@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Predicted track output data (large NPZ / Parquet files)
+output/
+
+# GENCODE GTF cache
+data/
+
+# API keys / secrets
+.env
+*.env

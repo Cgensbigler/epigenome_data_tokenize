@@ -1,0 +1,20 @@
+# ENCODE Tracks Tokenizer dependencies
+
+# HTTP requests and ENCODE REST API
+requests>=2.31.0
+
+# BigWig signal integration for AUC computation
+pyBigWig>=0.3.22
+
+# Hi-C contact matrix parsing
+hic-straw>=1.3.1
+
+# Data manipulation
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Parquet output (columnar, compressed)
+pyarrow>=14.0.0
+
+# Progress bars
+tqdm>=4.66.0
