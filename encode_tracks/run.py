@@ -59,6 +59,7 @@ def run_peak_assay(
     assembly: str,
     output_dir: Path,
     workers: int,
+    max_experiments: int | None = None,
 ) -> list:
     """Download + process one peak assay; return list of token DataFrames."""
     from downloader import batch_download_peak_experiments
@@ -75,6 +76,10 @@ def run_peak_assay(
         if not experiments:
             logger.warning("No experiments found for %s / %s", assay, biosample)
             continue
+
+        if max_experiments is not None and len(experiments) > max_experiments:
+            logger.info("Limiting from %d to %d experiments (--max-experiments)", len(experiments), max_experiments)
+            experiments = experiments[:max_experiments]
 
         logger.info("Found %d experiments to download", len(experiments))
         downloaded = batch_download_peak_experiments(experiments, output_dir, assay, workers)
@@ -94,6 +99,7 @@ def run_hic(
     resolution: int,
     chromosomes: list[str] | None,
     include_trans: bool,
+    max_experiments: int | None = None,
 ) -> list:
     """Download + process Hi-C; return list of token DataFrames."""
     from downloader import batch_download_hic_experiments
@@ -110,6 +116,10 @@ def run_hic(
         if not experiments:
             logger.warning("No Hi-C experiments found for %s", biosample)
             continue
+
+        if max_experiments is not None and len(experiments) > max_experiments:
+            logger.info("Limiting from %d to %d Hi-C experiments (--max-experiments)", len(experiments), max_experiments)
+            experiments = experiments[:max_experiments]
 
         logger.info("Found %d Hi-C experiments to download", len(experiments))
         downloaded = batch_download_hic_experiments(experiments, output_dir, workers)
@@ -202,6 +212,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Number of parallel download threads.",
     )
     parser.add_argument(
+        "--max-experiments",
+        type=int,
+        default=None,
+        metavar="N",
+        help="Limit number of experiments per assay (useful for development / disk constraints).",
+    )
+    parser.add_argument(
         "--log-level",
         default="INFO",
         choices=["DEBUG", "INFO", "WARNING", "ERROR"],
@@ -237,6 +254,7 @@ def main(argv: list[str] | None = None) -> None:
                 args.assembly,
                 args.output_dir,
                 args.workers,
+                max_experiments=args.max_experiments,
             )
             peak_frames.setdefault(assay, []).extend(frames)
         elif assay == "Hi-C":
@@ -248,6 +266,7 @@ def main(argv: list[str] | None = None) -> None:
                 resolution=args.hic_resolution,
                 chromosomes=args.chroms,
                 include_trans=args.hic_include_trans,
+                max_experiments=args.max_experiments,
             )
             hic_frames.extend(frames)
 

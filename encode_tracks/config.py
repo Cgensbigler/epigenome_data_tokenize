@@ -26,11 +26,12 @@ ENCODE_PAGE_LIMIT = 500
 ASSAY_TITLES = {
     "TF-ChIP-seq": "TF ChIP-seq",
     "ATAC-seq": "ATAC-seq",
-    "Hi-C": "Hi-C",
+    "ChIP-seq": "Histone ChIP-seq",
+    "Hi-C": "intact Hi-C",
 }
 
 # Peak-calling assays (those that produce narrowPeak + BigWig)
-PEAK_ASSAYS = {"TF-ChIP-seq", "ATAC-seq"}
+PEAK_ASSAYS = {"TF-ChIP-seq", "ATAC-seq", "ChIP-seq"}
 
 # ---------------------------------------------------------------------------
 # File type selection per assay
